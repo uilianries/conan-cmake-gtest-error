@@ -6,13 +6,17 @@ services:
   - docker
 
 before_install:
-  - docker run -ti --name conangcc7 -v ${PWD}:/home/conan/project lasote/conangcc7
+  - docker run -t -d --name conangcc7 -v ${PWD}:/home/conan/project lasote/conangcc7
 
 script:
-  - sudo pip install -U conan
-  - cd /home/conan/project
-  - mkdir build && cd build
-  - conan install .. -s build_type=Release
-  - cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
-  - ninja
-  - ./gtest1"
+  - docker exec conangcc7 sudo pip install -U conan
+  - docker exec conangcc7 cd /home/conan/project
+  - docker exec conangcc7 mkdir build && cd build
+  - docker exec conangcc7 conan install .. -s build_type=Release
+  - docker exec conangcc7 cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
+  - docker exec conangcc7 ninja
+  - docker exec conangcc7 ./gtest1
+
+after_script:
+  - docker stop conangcc7
+  - docker rm conangcc7

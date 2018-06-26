@@ -26,9 +26,10 @@ environment:
           CONAN_BUILD_TYPES: Debug
 
 install:
-  - set PATH=%PATH%;%PYTHON%/Scripts/
+  - set PATH=%PATH%;%PYTHON%/Scripts/;C:\ninja
   - pip.exe install conan --upgrade
   - conan user # It creates the conan data directory
+  - ps: DownloadFile -Source 'http://nirbheek.in/files/binaries/ninja/win32/ninja.exe' -Destination 'C:\ninja\ninja.exe'
 
 test_script:
   - mkdir build
